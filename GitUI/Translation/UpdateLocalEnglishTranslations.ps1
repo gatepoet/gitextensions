@@ -1,3 +1,5 @@
+pushd $PSScriptRoot
+
 Write-Host "Copying the latest English translation before the update..."
 $translationsFolder = Resolve-Path .\
 $releaseTranslationsFolder = Resolve-Path ..\..\GitExtensions\bin\Release\Translation

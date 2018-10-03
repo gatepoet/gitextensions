@@ -30,7 +30,7 @@ namespace Bitbucket
             ddlRepositorySource.DisplayMember = nameof(Repository.DisplayName);
             ddlRepositoryTarget.DisplayMember = nameof(Repository.DisplayName);
 
-            _settings = settings;
+            _settings = settings ?? new Settings();
 
             Load += delegate
             {

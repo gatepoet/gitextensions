@@ -69,6 +69,7 @@ namespace TranslationApp
         {
             using (new WaitCursorScope())
             {
+                GitModuleForm.IsUnitTestActive = true;
                 var neutralItems = TranslationHelpers.LoadNeutralItems();
                 string filename = Path.Combine(Translator.GetTranslationDir(), "English.xlf");
                 TranslationHelpers.SaveTranslation(null, neutralItems, filename);

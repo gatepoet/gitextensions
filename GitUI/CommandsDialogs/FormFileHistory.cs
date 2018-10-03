@@ -136,9 +136,9 @@ namespace GitUI.CommandsDialogs
             if (disposing)
             {
                 _asyncLoader.Dispose();
-                _filterRevisionsHelper.Dispose();
-                _filterBranchHelper.Dispose();
-                _formBrowseMenus.Dispose();
+                _filterRevisionsHelper?.Dispose();
+                _filterBranchHelper?.Dispose();
+                _formBrowseMenus?.Dispose();
 
                 components?.Dispose();
             }
