@@ -12,17 +12,14 @@ namespace GitHub3
         public OAuth()
         {
             InitializeComponent();
-            webBrowser1.ScriptErrorsSuppressed = true;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             try
             {
-                webBrowser1.ScriptErrorsSuppressed = true;
-                webBrowser1.CausesValidation = false;
                 string url = "https://github.com/login/oauth/authorize?client_id=" + GitHubApiInfo.client_id + "&scope=repo,public_repo";
-                webBrowser1.Navigate(url);
+                webView1.Navigate(url);
             }
             catch (NullReferenceException)
             {
@@ -32,14 +29,14 @@ namespace GitHub3
 
         private bool _gotToken;
 
-        public void web_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        private void webView1_NavigationStarting(object sender, Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT.WebViewControlNavigationStartingEventArgs e)
         {
-            CheckAuth(e.Url.ToString());
+            CheckAuth(e.Uri);
         }
 
-        public void web_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        private void webView1_NavigationCompleted(object sender, Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT.WebViewControlNavigationCompletedEventArgs e)
         {
-            CheckAuth(e.Url.ToString());
+            CheckAuth(e.Uri);
         }
 
         private static Dictionary<string, string> GetParams(string uri)
@@ -50,33 +47,29 @@ namespace GitHub3
                 m => Uri.UnescapeDataString(m.Groups[3].Value));
         }
 
-        public void CheckAuth(string url)
+        public void CheckAuth(Uri uri)
         {
             if (_gotToken)
             {
                 return;
             }
 
-            if (url.Contains("?code="))
+            var queryParams = GetParams(uri.Query);
+            if (queryParams.TryGetValue("code", out var code))
             {
-                var uri = new Uri(url);
-                var queryParams = GetParams(uri.Query);
-                if (queryParams.TryGetValue("code", out var code))
+                Hide();
+                Close();
+                string token = OAuth2Helper.requestToken(GitHubApiInfo.client_id, GitHubApiInfo.client_secret, code);
+                if (token == null)
                 {
-                    Hide();
-                    Close();
-                    string token = OAuth2Helper.requestToken(GitHubApiInfo.client_id, GitHubApiInfo.client_secret, code);
-                    if (token == null)
-                    {
-                        return;
-                    }
-
-                    _gotToken = true;
-
-                    GitHubLoginInfo.OAuthToken = token;
-
-                    MessageBox.Show(Owner, "Successfully retrieved OAuth token.", "GitHub Authorization");
+                    return;
                 }
+
+                _gotToken = true;
+
+                GitHubLoginInfo.OAuthToken = token;
+
+                MessageBox.Show(Owner, "Successfully retrieved OAuth token.", "GitHub Authorization");
             }
         }
     }

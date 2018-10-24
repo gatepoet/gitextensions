@@ -29,35 +29,38 @@ namespace GitHub3
         /// </summary>
         private void InitializeComponent()
         {
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.webView1 = new Microsoft.Toolkit.Win32.UI.Controls.WinForms.WebView();
+            ((System.ComponentModel.ISupportInitialize)(this.webView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // webBrowser1
+            // webView1
             // 
-            this.webBrowser1.AllowWebBrowserDrop = false;
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(980, 600);
-            this.webBrowser1.TabIndex = 0;
-            this.webBrowser1.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.web_Navigated);
-            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.web_Navigating);
+            this.webView1.CausesValidation = false;
+            this.webView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webView1.Location = new System.Drawing.Point(0, 0);
+            this.webView1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webView1.Name = "webView1";
+            this.webView1.Size = new System.Drawing.Size(980, 600);
+            this.webView1.TabIndex = 0;
+            this.webView1.NavigationCompleted += new System.EventHandler<Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT.WebViewControlNavigationCompletedEventArgs>(this.webView1_NavigationCompleted);
+            this.webView1.NavigationStarting += new System.EventHandler<Microsoft.Toolkit.Win32.UI.Controls.Interop.WinRT.WebViewControlNavigationStartingEventArgs>(this.webView1_NavigationStarting);
             // 
             // OAuth
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(980, 600);
-            this.Controls.Add(this.webBrowser1);
+            this.Controls.Add(this.webView1);
             this.Name = "OAuth";
             this.ShowIcon = false;
             this.Text = "GitHub Authorization";
+            ((System.ComponentModel.ISupportInitialize)(this.webView1)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion
 
-        private System.Windows.Forms.WebBrowser webBrowser1;
+        private Microsoft.Toolkit.Win32.UI.Controls.WinForms.WebView webView1;
     }
 }
